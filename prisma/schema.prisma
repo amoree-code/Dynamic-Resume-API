@@ -1,0 +1,100 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id           Int          @id @default(autoincrement())
+  email        String       @unique
+  password     String
+  name         String
+  nickname     String?
+  avatar       String?
+  github       String?
+  linkedin     String?
+  refreshToken String?
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  projects     Project[]
+  skills       Skill[]
+  experiences  Experience[]
+  educations   Education[]
+  contacts     Contact[]
+}
+
+model Project {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  longDesc    String?
+  techStack   String[]
+  liveUrl     String?
+  repoUrl     String?
+  imageUrl    String?
+  featured    Boolean  @default(false)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Skill {
+  id        Int      @id @default(autoincrement())
+  name      String
+  category  String
+  level     Int
+  iconUrl   String?
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Experience {
+  id          Int       @id @default(autoincrement())
+  company     String
+  role        String
+  description String?
+  startDate   DateTime
+  endDate     DateTime?
+  current     Boolean   @default(false)
+  location    String?
+  order       Int       @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  userId      Int
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Education {
+  id          Int       @id @default(autoincrement())
+  institution String
+  degree      String
+  field       String
+  startDate   DateTime
+  endDate     DateTime?
+  current     Boolean   @default(false)
+  gpa         String?
+  order       Int       @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  userId      Int
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Contact {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String
+  subject   String?
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
