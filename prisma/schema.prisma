@@ -22,7 +22,6 @@ model User {
   skills       Skill[]
   experiences  Experience[]
   educations   Education[]
-  contacts     Contact[]
 }
 
 model Project {
@@ -34,8 +33,6 @@ model Project {
   liveUrl     String?
   repoUrl     String?
   imageUrl    String?
-  featured    Boolean  @default(false)
-  order       Int      @default(0)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   userId      Int
@@ -48,7 +45,6 @@ model Skill {
   category  String
   level     Int
   iconUrl   String?
-  order     Int      @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   userId    Int
@@ -64,7 +60,6 @@ model Experience {
   endDate     DateTime?
   current     Boolean   @default(false)
   location    String?
-  order       Int       @default(0)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   userId      Int
@@ -80,21 +75,8 @@ model Education {
   endDate     DateTime?
   current     Boolean   @default(false)
   gpa         String?
-  order       Int       @default(0)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   userId      Int
   user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
-
-model Contact {
-  id        Int      @id @default(autoincrement())
-  name      String
-  email     String
-  subject   String?
-  message   String
-  read      Boolean  @default(false)
-  createdAt DateTime @default(now())
-  userId    Int
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
