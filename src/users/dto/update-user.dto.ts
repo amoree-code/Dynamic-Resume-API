@@ -12,18 +12,50 @@ export class UpdateUserDto {
   @IsString()
   nickname?: string;
 
+  @ApiPropertyOptional({ example: 'Abdulkareem' })
+  @IsOptional()
+  @IsString()
+  surname?: string;
+
+  @ApiPropertyOptional({ example: 'Full Stack Developer' })
+  @IsOptional()
+  @IsString()
+  title?: string;
+
+  @ApiPropertyOptional({ example: 'Building scalable web applications' })
+  @IsOptional()
+  @IsString()
+  subtitle?: string;
+
+  @ApiPropertyOptional({
+    example: 'Passionate developer with 5+ years of experience...',
+  })
+  @IsOptional()
+  @IsString()
+  bio?: string;
+
+  @ApiPropertyOptional({ example: '+9647777665783' })
+  @IsOptional()
+  @IsString()
+  phone1?: string;
+
+  @ApiPropertyOptional({ example: '+9647726819007' })
+  @IsOptional()
+  @IsString()
+  phone2?: string;
+
   @ApiPropertyOptional({ example: 'https://github.com/ameer' })
   @IsOptional()
-  @IsUrl()
+  @IsUrl({}, { message: 'github must be a valid URL or empty' })
   github?: string;
 
   @ApiPropertyOptional({ example: 'https://linkedin.com/in/ameer' })
   @IsOptional()
-  @IsUrl()
+  @IsUrl({}, { message: 'linkedin must be a valid URL or empty' })
   linkedin?: string;
 
-  @ApiPropertyOptional({ example: 'https://example.com/avatar.jpg' })
+  @ApiPropertyOptional({ example: 'https://instagram.com/ameer' })
   @IsOptional()
-  @IsUrl()
-  avatar?: string;
+  @IsUrl({}, { message: 'instagram must be a valid URL or empty' })
+  instagram?: string;
 }

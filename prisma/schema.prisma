@@ -12,9 +12,15 @@ model User {
   password     String
   name         String
   nickname     String?
-  avatar       String?
+  surname      String?
+  title        String?
+  subtitle     String?
+  bio          String?
+  phone1       String?
+  phone2       String?
   github       String?
   linkedin     String?
+  instagram    String?
   refreshToken String?
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @updatedAt

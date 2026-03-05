@@ -48,8 +48,9 @@ export class AuthService {
     return this.signTokens(user.id, user.email);
   }
 
-  async refresh(userId: number, refreshToken: string) {
-    const user = await this.prisma.user.findUnique({ where: { id: userId } });
+  async refresh(refreshToken: string) {
+    const payload = this.jwt.decode(refreshToken) as { sub: number };
+    const user = await this.prisma.user.findUnique({ where: { id: payload.sub } });
     if (!user?.refreshToken) throw new ForbiddenException('Access denied');
 
     const match = await bcrypt.compare(refreshToken, user.refreshToken);

@@ -8,7 +8,7 @@ export class ExperienceService {
   constructor(private readonly prisma: PrismaService) {}
 
   findAll() {
-    return this.prisma.experience.findMany({ orderBy: { startDate: 'desc' } });
+    return this.prisma.experience.findMany();
   }
 
   async findOne(id: number) {
