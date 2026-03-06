@@ -37,8 +37,8 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthGuard('jwt-refresh'))
   refresh(@Req() req: Request) {
-    const user = req.user as { id: number; refreshToken: string };
-    return this.authService.refresh(user.id, user.refreshToken);
+    const { refreshToken } = req.user as { refreshToken: string };
+    return this.authService.refresh(refreshToken);
   }
 
   @ApiBearerAuth('access-token')
