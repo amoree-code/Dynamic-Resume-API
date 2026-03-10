@@ -10,7 +10,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout code in GitHub runner (optional, mostly for reference)
       - name: Checkout code
         uses: actions/checkout@v3
 
@@ -23,34 +22,21 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           port: 22
           script: |
-            # Ensure base projects folder exists
-            mkdir -p ~/projects
-            cd ~/projects
+            # Navigate to project directory
+              cd ~/projects/dynamic-resume-api
 
-            # Clone repo if it doesn't exist
-            if [ ! -d "dynamic-resume-api" ]; then
-              git clone git@github.com:amoree-code/Dynamic-Resume-API.git
-            fi
+               # Check if pnpm is installed
+                      if ! command -v pnpm &> /dev/null
+                      then
+                          echo "pnpm not found, installing..."
+                          npm install -g pnpm
+                      else
+                          echo "pnpm is already installed"
+                      fi
 
-            # Enter project directory
-            cd dynamic-resume-api
-
-            # Pull latest changes
-            git pull origin main
-
-            # Install dependencies
-            pnpm install
-
-            # Ensure PM2 is installed
-            if ! command -v pm2 >/dev/null 2>&1; then
-              npm install -g pm2
-            fi
-
-            # Use full path to pm2 in case PATH is not loaded
-            PM2_BIN=$(which pm2 || echo "/usr/local/bin/pm2")
-
-            # Restart or start the app safely
-            $PM2_BIN restart resume-api || $PM2_BIN start index.js --name resume-api
-
-            # Show running PM2 processes
-            $PM2_BIN list
+                      # Deployment steps
+                      git fetch origin main
+                      git reset --hard origin/main
+                      git clean -fd
+                      pnpm install
+                      pnpm build
