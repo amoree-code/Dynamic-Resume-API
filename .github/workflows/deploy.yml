@@ -10,9 +10,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Checkout code in GitHub runner (optional, mostly for reference)
       - name: Checkout code
         uses: actions/checkout@v3
 
+      # Step 2: Deploy to VPS via SSH
       - name: Deploy to VPS via SSH
         uses: appleboy/ssh-action@v0.1.9
         with:
@@ -21,8 +23,34 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           port: 22
           script: |
-            cd ~/projects/dynamic-resume-api
+            # Ensure base projects folder exists
+            mkdir -p ~/projects
+            cd ~/projects
+
+            # Clone repo if it doesn't exist
+            if [ ! -d "dynamic-resume-api" ]; then
+              git clone git@github.com:amoree-code/Dynamic-Resume-API.git
+            fi
+
+            # Enter project directory
+            cd dynamic-resume-api
+
+            # Pull latest changes
             git pull origin main
+
+            # Install dependencies
             pnpm install
-            pm2 restart resume-api
-            pm2 list
+
+            # Ensure PM2 is installed
+            if ! command -v pm2 >/dev/null 2>&1; then
+              npm install -g pm2
+            fi
+
+            # Use full path to pm2 in case PATH is not loaded
+            PM2_BIN=$(which pm2 || echo "/usr/local/bin/pm2")
+
+            # Restart or start the app safely
+            $PM2_BIN restart resume-api || $PM2_BIN start index.js --name resume-api
+
+            # Show running PM2 processes
+            $PM2_BIN list
