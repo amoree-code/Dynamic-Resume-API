@@ -3,7 +3,7 @@ name: Deploy Node.js App to VPS
 on:
   push:
     branches:
-      - main # deploy only when pushing to main branch
+      - main
 
 jobs:
   deploy:
@@ -13,7 +13,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Step 2: Deploy to VPS via SSH
       - name: Deploy to VPS via SSH
         uses: appleboy/ssh-action@v0.1.9
         with:
