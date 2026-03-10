@@ -21,7 +21,7 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           port: 22
           script: |
-            cd ~/p/dynamic-resume-api
+            cd ~/projects/dynamic-resume-api
             git pull origin main
             pnpm install
             pm2 restart resume-api
